@@ -1,3 +1,5 @@
+using HotelSysteem.Data;
+
 namespace HotelSysteem
 {
     public class Program
@@ -5,6 +7,8 @@ namespace HotelSysteem
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+
+            builder.Services.AddDbContext<HotelContext>();
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
