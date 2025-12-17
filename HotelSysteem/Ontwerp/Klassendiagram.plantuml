@@ -1,0 +1,67 @@
+@startuml
+title Klassendiagram - Hotel Systeem
+
+class HotelRekening {
+  reserveringen: HotelReservering[]
+  toeristenbelasting: int
+  korting: int
+  betaald: bool
+}
+
+class HotelReservering {
+  naam: string
+  emailadres: string
+  telefoonnummer: string
+  beginDatum: string
+  eindDatum: string
+  kamerReserveringen: HotelKamerReservering[]
+}
+
+class HotelKamerReservering {
+  reservering: HotelReservering
+  kamer: HotelKamer
+  tarieven: HotelKamerTarieven
+  aantalPersonen: int
+}
+
+class HotelKamer {
+  voorzieningen: HotelKamerVoorzieningen
+  nummer: int
+}
+
+class HotelKamerBed {
+  omschrijving: string
+}
+
+class HotelKamerBedden {
+  bed: HotelKamerBed
+  aantal: int
+}
+
+class HotelKamerVoorzieningen {
+  bedden: HotelKamerBedden[]
+  oppervlakte: int
+  balkon: bool
+  badkamers: int
+  slaapkamers: int
+}
+
+class HotelKamerTarieven {
+  kamer: HotelKamer
+  geldigVan: string
+  geldigTot: string
+  tarief: int
+}
+
+HotelRekening "1" -- "1..*" HotelReservering
+HotelReservering "1" -- "1..*" HotelKamerReservering
+HotelKamerReservering "0..*" -- "1" HotelKamer
+
+HotelKamerTarieven "1" -- "0..*" HotelKamerReservering
+HotelKamerTarieven "1..*" -- "1" HotelKamer
+HotelKamer "0..*" -- "1" HotelKamerVoorzieningen
+
+HotelKamerVoorzieningen "0..*" -- "0..*" HotelKamerBedden
+HotelKamerBedden "0..1" -- "1" HotelKamerBed
+
+@enduml
