@@ -1,4 +1,4 @@
-﻿@model HotelSysteem.Models.Hotelkamer
+﻿@model HotelSysteem.Models.HotelKamerBedden
 
 @{
     ViewData["Title"] = "Details";
@@ -7,20 +7,20 @@
 <h1>Details</h1>
 
 <div>
-    <h4>Hotelkamer</h4>
+    <h4>HotelKamerBedden</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nummer)
+            @Html.DisplayNameFor(model => model.Bed)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nummer)
+            @Html.DisplayFor(model => model.Bed.Id)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VoorzieningenId)
+            @Html.DisplayNameFor(model => model.Aantal)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VoorzieningenId)
+            @Html.DisplayFor(model => model.Aantal)
         </dd>
     </dl>
 </div>

@@ -1,4 +1,4 @@
-﻿@model HotelSysteem.Models.Hotelkamer
+﻿@model HotelSysteem.Models.HotelKamerBed
 
 @{
     ViewData["Title"] = "Edit";
@@ -6,7 +6,7 @@
 
 <h1>Edit</h1>
 
-<h4>Hotelkamer</h4>
+<h4>HotelKamerBed</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
@@ -14,14 +14,9 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
-                <label asp-for="Nummer" class="control-label"></label>
-                <input asp-for="Nummer" class="form-control" />
-                <span asp-validation-for="Nummer" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="VoorzieningenId" class="control-label"></label>
-                <input asp-for="VoorzieningenId" class="form-control" />
-                <span asp-validation-for="VoorzieningenId" class="text-danger"></span>
+                <label asp-for="Omschrijving" class="control-label"></label>
+                <input asp-for="Omschrijving" class="form-control" />
+                <span asp-validation-for="Omschrijving" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

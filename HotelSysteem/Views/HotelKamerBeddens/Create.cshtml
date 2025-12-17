@@ -1,4 +1,4 @@
-﻿@model HotelSysteem.Models.Hotelkamer
+﻿@model HotelSysteem.Models.HotelKamerBedden
 
 @{
     ViewData["Title"] = "Create";
@@ -6,21 +6,20 @@
 
 <h1>Create</h1>
 
-<h4>Hotelkamer</h4>
+<h4>HotelKamerBedden</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Nummer" class="control-label"></label>
-                <input asp-for="Nummer" class="form-control" />
-                <span asp-validation-for="Nummer" class="text-danger"></span>
+                <label asp-for="BedId" class="control-label"></label>
+                <select asp-for="BedId" class ="form-control" asp-items="ViewBag.BedId"></select>
             </div>
             <div class="form-group">
-                <label asp-for="VoorzieningenId" class="control-label"></label>
-                <input asp-for="VoorzieningenId" class="form-control" />
-                <span asp-validation-for="VoorzieningenId" class="text-danger"></span>
+                <label asp-for="Aantal" class="control-label"></label>
+                <input asp-for="Aantal" class="form-control" />
+                <span asp-validation-for="Aantal" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

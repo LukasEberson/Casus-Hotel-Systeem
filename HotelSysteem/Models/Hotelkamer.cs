@@ -8,12 +8,8 @@ namespace HotelSysteem.Models
     public class Hotelkamer
     {
         public int Id { get ; set; }
-        public string KamerNummer { get ; set; }
-
-        public int AantalPersonen { get ; set; }
-
-        public decimal PrijsPerNacht { get ; set; }
-
-        public string Omschrijving { get ; set; }
+        public int Nummer { get ; set; }
+        public int VoorzieningenId { get; set; }
+        public HotelKamerVoorzieningen Voorzieningen { get; set; }
     }
 }

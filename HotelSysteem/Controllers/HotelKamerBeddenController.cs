@@ -10,22 +10,22 @@ using HotelSysteem.Models;
 
 namespace HotelSysteem.Controllers
 {
-    public class HotelkamersController : Controller
+    public class HotelKamerBeddenController : Controller
     {
         private readonly HotelContext _context;
 
-        public HotelkamersController(HotelContext context)
+        public HotelKamerBeddenController(HotelContext context)
         {
             _context = context;
         }
 
-        // GET: Hotelkamers
+        // GET: HotelKamerBedden
         public async Task<IActionResult> Index()
         {
-            return View(await _context.HotelKamers.ToListAsync());
+            return View(await _context.Bedden.ToListAsync());
         }
 
-        // GET: Hotelkamers/Details/5
+        // GET: HotelKamerBedden/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +33,39 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelKamerBed = await _context.Bedden
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelKamerBed == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelKamerBed);
         }
 
-        // GET: Hotelkamers/Create
+        // GET: HotelKamerBedden/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: Hotelkamers/Create
+        // POST: HotelKamerBedden/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nummer,VoorzieningenId")] Hotelkamer hotelkamer)
+        public async Task<IActionResult> Create([Bind("Id,Omschrijving")] HotelKamerBed hotelKamerBed)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotelkamer);
+                _context.Add(hotelKamerBed);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            return View(hotelKamerBed);
         }
 
-        // GET: Hotelkamers/Edit/5
+        // GET: HotelKamerBedden/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +73,22 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer == null)
+            var hotelKamerBed = await _context.Bedden.FindAsync(id);
+            if (hotelKamerBed == null)
             {
                 return NotFound();
             }
-            return View(hotelkamer);
+            return View(hotelKamerBed);
         }
 
-        // POST: Hotelkamers/Edit/5
+        // POST: HotelKamerBedden/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nummer,VoorzieningenId")] Hotelkamer hotelkamer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Omschrijving")] HotelKamerBed hotelKamerBed)
         {
-            if (id != hotelkamer.Id)
+            if (id != hotelKamerBed.Id)
             {
                 return NotFound();
             }
@@ -97,12 +97,12 @@ namespace HotelSysteem.Controllers
             {
                 try
                 {
-                    _context.Update(hotelkamer);
+                    _context.Update(hotelKamerBed);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelkamerExists(hotelkamer.Id))
+                    if (!HotelKamerBedExists(hotelKamerBed.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +113,10 @@ namespace HotelSysteem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            return View(hotelKamerBed);
         }
 
-        // GET: Hotelkamers/Delete/5
+        // GET: HotelKamerBedden/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +124,34 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelKamerBed = await _context.Bedden
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelKamerBed == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelKamerBed);
         }
 
-        // POST: Hotelkamers/Delete/5
+        // POST: HotelKamerBedden/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer != null)
+            var hotelKamerBed = await _context.Bedden.FindAsync(id);
+            if (hotelKamerBed != null)
             {
-                _context.HotelKamers.Remove(hotelkamer);
+                _context.Bedden.Remove(hotelKamerBed);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HotelkamerExists(int id)
+        private bool HotelKamerBedExists(int id)
         {
-            return _context.HotelKamers.Any(e => e.Id == id);
+            return _context.Bedden.Any(e => e.Id == id);
         }
     }
 }
