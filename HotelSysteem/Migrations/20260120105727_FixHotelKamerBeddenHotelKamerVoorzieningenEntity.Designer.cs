@@ -3,6 +3,7 @@ using HotelSysteem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelSysteem.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    partial class HotelContextModelSnapshot : ModelSnapshot
+    [Migration("20260120105727_FixHotelKamerBeddenHotelKamerVoorzieningenEntity")]
+    partial class FixHotelKamerBeddenHotelKamerVoorzieningenEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,6 +23,21 @@ namespace HotelSysteem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HotelKamerBeddenHotelKamerVoorzieningen", b =>
+                {
+                    b.Property<int>("BeddenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoorzieningenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BeddenId", "VoorzieningenId");
+
+                    b.HasIndex("VoorzieningenId");
+
+                    b.ToTable("HotelKamerBeddenHotelKamerVoorzieningen", (string)null);
+                });
 
             modelBuilder.Entity("HotelSysteem.Models.HotelKamerBed", b =>
                 {
@@ -87,21 +105,6 @@ namespace HotelSysteem.Migrations
                     b.ToTable("Voorzieningens");
                 });
 
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningenBedden", b =>
-                {
-                    b.Property<int>("BeddenId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoorzieningenId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BeddenId", "VoorzieningenId");
-
-                    b.HasIndex("VoorzieningenId");
-
-                    b.ToTable("HotelKamerBeddenHotelKamerVoorzieningen", (string)null);
-                });
-
             modelBuilder.Entity("HotelSysteem.Models.Hotelkamer", b =>
                 {
                     b.Property<int>("Id")
@@ -124,18 +127,7 @@ namespace HotelSysteem.Migrations
                     b.ToTable("HotelKamers");
                 });
 
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerBedden", b =>
-                {
-                    b.HasOne("HotelSysteem.Models.HotelKamerBed", "Bed")
-                        .WithMany("Bedden")
-                        .HasForeignKey("BedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bed");
-                });
-
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningenBedden", b =>
+            modelBuilder.Entity("HotelKamerBeddenHotelKamerVoorzieningen", b =>
                 {
                     b.HasOne("HotelSysteem.Models.HotelKamerBedden", null)
                         .WithMany()
@@ -148,6 +140,17 @@ namespace HotelSysteem.Migrations
                         .HasForeignKey("VoorzieningenId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("HotelSysteem.Models.HotelKamerBedden", b =>
+                {
+                    b.HasOne("HotelSysteem.Models.HotelKamerBed", "Bed")
+                        .WithMany("Bedden")
+                        .HasForeignKey("BedId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Bed");
                 });
 
             modelBuilder.Entity("HotelSysteem.Models.Hotelkamer", b =>

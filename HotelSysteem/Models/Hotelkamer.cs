@@ -3,13 +3,18 @@
 // Daarnaast kan je voor andere properties ook data annotations gebruiken zoals [Required] --> dit laat zien dat deze property verplicht is.
 
 
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace HotelSysteem.Models
 {
     public class Hotelkamer
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get ; set; }
         public int Nummer { get ; set; }
         public int VoorzieningenId { get; set; }
-        public HotelKamerVoorzieningen Voorzieningen { get; set; }
+        public virtual HotelKamerVoorzieningen? Voorzieningen { get; set; } = null;
     }
 }

@@ -23,6 +23,10 @@ namespace HotelSysteem.Data
             modelBuilder.Entity<Hotelkamer>(builder =>
             {
                 builder
+                    .Property(k => k.Id)
+                    .UseIdentityColumn();
+
+                builder
                     .HasKey(k => k.Id);
 
                 builder
@@ -34,14 +38,34 @@ namespace HotelSysteem.Data
             modelBuilder.Entity<HotelKamerVoorzieningen>(builder =>
             {
                 builder
+                    .Property(v => v.Id)
+                    .UseIdentityColumn();
+
+                builder
                     .HasKey(v => v.Id);
 
                 builder
+                    .HasOne(v => v.Kamer)
+                    .WithOne(k => k.Voorzieningen)
+                    .HasPrincipalKey<HotelKamerVoorzieningen>(v => v.Id)
+                    .HasForeignKey<Hotelkamer>(k => k.VoorzieningenId);
+
+                builder
                     .HasMany(v => v.Bedden)
-                    .WithMany(b => b.Voorzieningen);
+                    .WithMany(b => b.Voorzieningen)
+                    .UsingEntity<HotelKamerVoorzieningenBedden>()
+                    .ToTable("HotelKamerBeddenHotelKamerVoorzieningen");
+
+                builder
+                    .Property(v => v.KamerId)
+                    .IsRequired(false);
             });
             modelBuilder.Entity<HotelKamerBedden>(builder =>
             {
+                builder
+                    .Property(b => b.Id)
+                    .UseIdentityColumn();
+
                 builder
                     .HasKey(b => b.Id);
 
@@ -50,9 +74,19 @@ namespace HotelSysteem.Data
                     .WithMany(b => b.Bedden)
                     .HasPrincipalKey(b => b.Id)
                     .HasForeignKey(b => b.BedId);
+
+                builder
+                    .HasMany(b => b.Voorzieningen)
+                    .WithMany(v => v.Bedden)
+                    .UsingEntity<HotelKamerVoorzieningenBedden>()
+                    .ToTable("HotelKamerBeddenHotelKamerVoorzieningen");
             });
             modelBuilder.Entity<HotelKamerBed>(builder =>
             {
+                builder
+                    .Property(b => b.Id)
+                    .UseIdentityColumn();
+
                 builder
                     .HasKey(b => b.Id);
             });

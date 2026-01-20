@@ -3,6 +3,7 @@ using HotelSysteem.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace HotelSysteem.Migrations
 {
     [DbContext(typeof(HotelContext))]
-    partial class HotelContextModelSnapshot : ModelSnapshot
+    [Migration("20260120100815_FixHotelKamerBedden")]
+    partial class FixHotelKamerBedden
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,6 +23,21 @@ namespace HotelSysteem.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("HotelKamerBeddenHotelKamerVoorzieningen", b =>
+                {
+                    b.Property<int>("BeddenId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("VoorzieningenId")
+                        .HasColumnType("int");
+
+                    b.HasKey("BeddenId", "VoorzieningenId");
+
+                    b.HasIndex("VoorzieningenId");
+
+                    b.ToTable("HotelKamerBeddenHotelKamerVoorzieningen");
+                });
 
             modelBuilder.Entity("HotelSysteem.Models.HotelKamerBed", b =>
                 {
@@ -73,7 +91,7 @@ namespace HotelSysteem.Migrations
                     b.Property<bool>("Balkon")
                         .HasColumnType("bit");
 
-                    b.Property<int?>("KamerId")
+                    b.Property<int>("KamerId")
                         .HasColumnType("int");
 
                     b.Property<int>("Oppervlakte")
@@ -84,22 +102,10 @@ namespace HotelSysteem.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("KamerId")
+                        .IsUnique();
+
                     b.ToTable("Voorzieningens");
-                });
-
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningenBedden", b =>
-                {
-                    b.Property<int>("BeddenId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("VoorzieningenId")
-                        .HasColumnType("int");
-
-                    b.HasKey("BeddenId", "VoorzieningenId");
-
-                    b.HasIndex("VoorzieningenId");
-
-                    b.ToTable("HotelKamerBeddenHotelKamerVoorzieningen", (string)null);
                 });
 
             modelBuilder.Entity("HotelSysteem.Models.Hotelkamer", b =>
@@ -118,24 +124,10 @@ namespace HotelSysteem.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("VoorzieningenId")
-                        .IsUnique();
-
                     b.ToTable("HotelKamers");
                 });
 
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerBedden", b =>
-                {
-                    b.HasOne("HotelSysteem.Models.HotelKamerBed", "Bed")
-                        .WithMany("Bedden")
-                        .HasForeignKey("BedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Bed");
-                });
-
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningenBedden", b =>
+            modelBuilder.Entity("HotelKamerBeddenHotelKamerVoorzieningen", b =>
                 {
                     b.HasOne("HotelSysteem.Models.HotelKamerBedden", null)
                         .WithMany()
@@ -150,15 +142,26 @@ namespace HotelSysteem.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("HotelSysteem.Models.Hotelkamer", b =>
+            modelBuilder.Entity("HotelSysteem.Models.HotelKamerBedden", b =>
                 {
-                    b.HasOne("HotelSysteem.Models.HotelKamerVoorzieningen", "Voorzieningen")
-                        .WithOne("Kamer")
-                        .HasForeignKey("HotelSysteem.Models.Hotelkamer", "VoorzieningenId")
+                    b.HasOne("HotelSysteem.Models.HotelKamerBed", "Bed")
+                        .WithMany("Bedden")
+                        .HasForeignKey("BedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Voorzieningen");
+                    b.Navigation("Bed");
+                });
+
+            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningen", b =>
+                {
+                    b.HasOne("HotelSysteem.Models.Hotelkamer", "Kamer")
+                        .WithOne("Voorzieningen")
+                        .HasForeignKey("HotelSysteem.Models.HotelKamerVoorzieningen", "KamerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Kamer");
                 });
 
             modelBuilder.Entity("HotelSysteem.Models.HotelKamerBed", b =>
@@ -166,9 +169,10 @@ namespace HotelSysteem.Migrations
                     b.Navigation("Bedden");
                 });
 
-            modelBuilder.Entity("HotelSysteem.Models.HotelKamerVoorzieningen", b =>
+            modelBuilder.Entity("HotelSysteem.Models.Hotelkamer", b =>
                 {
-                    b.Navigation("Kamer");
+                    b.Navigation("Voorzieningen")
+                        .IsRequired();
                 });
 #pragma warning restore 612, 618
         }
