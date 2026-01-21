@@ -23,14 +23,14 @@ namespace HotelSysteem.Controllers
 
         // GET: api/HotelKamersApi
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Hotelkamer>>> GetHotelKamers()
+        public async Task<ActionResult<IEnumerable<HotelKamer>>> GetHotelKamers()
         {
             return await _context.HotelKamers.ToListAsync();
         }
 
         // GET: api/HotelKamersApi/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Hotelkamer>> GetHotelkamer(int id)
+        public async Task<ActionResult<HotelKamer>> GetHotelkamer(int id)
         {
             var hotelkamer = await _context.HotelKamers.FindAsync(id);
 
@@ -45,7 +45,7 @@ namespace HotelSysteem.Controllers
         // PUT: api/HotelKamersApi/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutHotelkamer(int id, Hotelkamer hotelkamer)
+        public async Task<IActionResult> PutHotelkamer(int id, HotelKamer hotelkamer)
         {
             if (id != hotelkamer.Id)
             {
@@ -76,7 +76,7 @@ namespace HotelSysteem.Controllers
         // POST: api/HotelKamersApi
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Hotelkamer>> PostHotelkamer(Hotelkamer hotelkamer)
+        public async Task<ActionResult<HotelKamer>> PostHotelkamer(HotelKamer hotelkamer)
         {
             _context.HotelKamers.Add(hotelkamer);
             await _context.SaveChangesAsync();

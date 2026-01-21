@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HotelSysteem.Models
 {
-    public class Hotelkamer
+    public class HotelKamer
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -16,5 +16,7 @@ namespace HotelSysteem.Models
         public int Nummer { get ; set; }
         public int VoorzieningenId { get; set; }
         public virtual HotelKamerVoorzieningen? Voorzieningen { get; set; } = null;
+        public virtual ICollection<HotelKamerTarief> Tarieven { get; set; } = [];
+        public virtual ICollection<HotelKamerReservering> Reserveringen { get; set; } = [];
     }
 }

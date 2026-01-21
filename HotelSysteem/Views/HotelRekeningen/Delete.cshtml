@@ -1,4 +1,4 @@
-﻿@model HotelSysteem.Models.HotelKamer
+﻿@model HotelSysteem.Models.HotelRekening
 
 @{
     ViewData["Title"] = "Delete";
@@ -8,20 +8,26 @@
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
-    <h4>Hotelkamer</h4>
+    <h4>HotelRekening</h4>
     <hr />
     <dl class="row">
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Nummer)
+            @Html.DisplayNameFor(model => model.ToeristenBelasting)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Nummer)
+            @Html.DisplayFor(model => model.ToeristenBelasting)
         </dd>
         <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.VoorzieningenId)
+            @Html.DisplayNameFor(model => model.Korting)
         </dt>
         <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.VoorzieningenId)
+            @Html.DisplayFor(model => model.Korting)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Betaald)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Betaald)
         </dd>
     </dl>
     

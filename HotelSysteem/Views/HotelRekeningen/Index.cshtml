@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HotelSysteem.Models.HotelKamer>
+﻿@model IEnumerable<HotelSysteem.Models.HotelRekening>
 
 @{
     ViewData["Title"] = "Index";
@@ -13,10 +13,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Nummer)
+                @Html.DisplayNameFor(model => model.ToeristenBelasting)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.VoorzieningenId)
+                @Html.DisplayNameFor(model => model.Korting)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Betaald)
             </th>
             <th></th>
         </tr>
@@ -25,10 +28,13 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Nummer)
+                @Html.DisplayFor(modelItem => item.ToeristenBelasting)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.VoorzieningenId)
+                @Html.DisplayFor(modelItem => item.Korting)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Betaald)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

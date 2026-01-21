@@ -10,22 +10,23 @@ using HotelSysteem.Models;
 
 namespace HotelSysteem.Controllers
 {
-    public class HotelkamersController : Controller
+    public class HotelReserveringenController : Controller
     {
         private readonly HotelContext _context;
 
-        public HotelkamersController(HotelContext context)
+        public HotelReserveringenController(HotelContext context)
         {
             _context = context;
         }
 
-        // GET: Hotelkamers
+        // GET: HotelReserveringen
         public async Task<IActionResult> Index()
         {
-            return View(await _context.HotelKamers.ToListAsync());
+            var hotelContext = _context.HotelReserveringen.Include(h => h.Rekening);
+            return View(await hotelContext.ToListAsync());
         }
 
-        // GET: Hotelkamers/Details/5
+        // GET: HotelReserveringen/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelReservering = await _context.HotelReserveringen
+                .Include(h => h.Rekening)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelReservering == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelReservering);
         }
 
-        // GET: Hotelkamers/Create
+        // GET: HotelReserveringen/Create
         public IActionResult Create()
         {
+            ViewData["RekeningId"] = new SelectList(_context.HotelRekeningen, "Id", "Id");
             return View();
         }
 
-        // POST: Hotelkamers/Create
+        // POST: HotelReserveringen/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nummer,VoorzieningenId")] HotelKamer hotelkamer)
+        public async Task<IActionResult> Create([Bind("Id,RekeningId,Naam,Emailaddres,TelefoonNummer,BeginDatum,EindDatum")] HotelReservering hotelReservering)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotelkamer);
+                _context.Add(hotelReservering);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            ViewData["RekeningId"] = new SelectList(_context.HotelRekeningen, "Id", "Id", hotelReservering.RekeningId);
+            return View(hotelReservering);
         }
 
-        // GET: Hotelkamers/Edit/5
+        // GET: HotelReserveringen/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer == null)
+            var hotelReservering = await _context.HotelReserveringen.FindAsync(id);
+            if (hotelReservering == null)
             {
                 return NotFound();
             }
-            return View(hotelkamer);
+            ViewData["RekeningId"] = new SelectList(_context.HotelRekeningen, "Id", "Id", hotelReservering.RekeningId);
+            return View(hotelReservering);
         }
 
-        // POST: Hotelkamers/Edit/5
+        // POST: HotelReserveringen/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nummer,VoorzieningenId")] HotelKamer hotelkamer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,RekeningId,Naam,Emailaddres,TelefoonNummer,BeginDatum,EindDatum")] HotelReservering hotelReservering)
         {
-            if (id != hotelkamer.Id)
+            if (id != hotelReservering.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace HotelSysteem.Controllers
             {
                 try
                 {
-                    _context.Update(hotelkamer);
+                    _context.Update(hotelReservering);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelkamerExists(hotelkamer.Id))
+                    if (!HotelReserveringExists(hotelReservering.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace HotelSysteem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            ViewData["RekeningId"] = new SelectList(_context.HotelRekeningen, "Id", "Id", hotelReservering.RekeningId);
+            return View(hotelReservering);
         }
 
-        // GET: Hotelkamers/Delete/5
+        // GET: HotelReserveringen/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,35 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelReservering = await _context.HotelReserveringen
+                .Include(h => h.Rekening)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelReservering == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelReservering);
         }
 
-        // POST: Hotelkamers/Delete/5
+        // POST: HotelReserveringen/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer != null)
+            var hotelReservering = await _context.HotelReserveringen.FindAsync(id);
+            if (hotelReservering != null)
             {
-                _context.HotelKamers.Remove(hotelkamer);
+                _context.HotelReserveringen.Remove(hotelReservering);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HotelkamerExists(int id)
+        private bool HotelReserveringExists(int id)
         {
-            return _context.HotelKamers.Any(e => e.Id == id);
+            return _context.HotelReserveringen.Any(e => e.Id == id);
         }
     }
 }

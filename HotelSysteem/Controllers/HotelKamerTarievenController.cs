@@ -10,22 +10,23 @@ using HotelSysteem.Models;
 
 namespace HotelSysteem.Controllers
 {
-    public class HotelkamersController : Controller
+    public class HotelKamerTarievenController : Controller
     {
         private readonly HotelContext _context;
 
-        public HotelkamersController(HotelContext context)
+        public HotelKamerTarievenController(HotelContext context)
         {
             _context = context;
         }
 
-        // GET: Hotelkamers
+        // GET: HotelKamerTarieven
         public async Task<IActionResult> Index()
         {
-            return View(await _context.HotelKamers.ToListAsync());
+            var hotelContext = _context.HotelKamerTarieven.Include(h => h.Kamer);
+            return View(await hotelContext.ToListAsync());
         }
 
-        // GET: Hotelkamers/Details/5
+        // GET: HotelKamerTarieven/Details/5
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -33,39 +34,42 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelKamerTarief = await _context.HotelKamerTarieven
+                .Include(h => h.Kamer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelKamerTarief == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelKamerTarief);
         }
 
-        // GET: Hotelkamers/Create
+        // GET: HotelKamerTarieven/Create
         public IActionResult Create()
         {
+            ViewData["KamerId"] = new SelectList(_context.HotelKamers, "Id", "Id");
             return View();
         }
 
-        // POST: Hotelkamers/Create
+        // POST: HotelKamerTarieven/Create
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Nummer,VoorzieningenId")] HotelKamer hotelkamer)
+        public async Task<IActionResult> Create([Bind("Id,KamerId,GeldingVan,GeldigTot,Tarief")] HotelKamerTarief hotelKamerTarief)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(hotelkamer);
+                _context.Add(hotelKamerTarief);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            ViewData["KamerId"] = new SelectList(_context.HotelKamers, "Id", "Id", hotelKamerTarief.KamerId);
+            return View(hotelKamerTarief);
         }
 
-        // GET: Hotelkamers/Edit/5
+        // GET: HotelKamerTarieven/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -73,22 +77,23 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer == null)
+            var hotelKamerTarief = await _context.HotelKamerTarieven.FindAsync(id);
+            if (hotelKamerTarief == null)
             {
                 return NotFound();
             }
-            return View(hotelkamer);
+            ViewData["KamerId"] = new SelectList(_context.HotelKamers, "Id", "Id", hotelKamerTarief.KamerId);
+            return View(hotelKamerTarief);
         }
 
-        // POST: Hotelkamers/Edit/5
+        // POST: HotelKamerTarieven/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Nummer,VoorzieningenId")] HotelKamer hotelkamer)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,KamerId,GeldingVan,GeldigTot,Tarief")] HotelKamerTarief hotelKamerTarief)
         {
-            if (id != hotelkamer.Id)
+            if (id != hotelKamerTarief.Id)
             {
                 return NotFound();
             }
@@ -97,12 +102,12 @@ namespace HotelSysteem.Controllers
             {
                 try
                 {
-                    _context.Update(hotelkamer);
+                    _context.Update(hotelKamerTarief);
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!HotelkamerExists(hotelkamer.Id))
+                    if (!HotelKamerTariefExists(hotelKamerTarief.Id))
                     {
                         return NotFound();
                     }
@@ -113,10 +118,11 @@ namespace HotelSysteem.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(hotelkamer);
+            ViewData["KamerId"] = new SelectList(_context.HotelKamers, "Id", "Id", hotelKamerTarief.KamerId);
+            return View(hotelKamerTarief);
         }
 
-        // GET: Hotelkamers/Delete/5
+        // GET: HotelKamerTarieven/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -124,34 +130,35 @@ namespace HotelSysteem.Controllers
                 return NotFound();
             }
 
-            var hotelkamer = await _context.HotelKamers
+            var hotelKamerTarief = await _context.HotelKamerTarieven
+                .Include(h => h.Kamer)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (hotelkamer == null)
+            if (hotelKamerTarief == null)
             {
                 return NotFound();
             }
 
-            return View(hotelkamer);
+            return View(hotelKamerTarief);
         }
 
-        // POST: Hotelkamers/Delete/5
+        // POST: HotelKamerTarieven/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var hotelkamer = await _context.HotelKamers.FindAsync(id);
-            if (hotelkamer != null)
+            var hotelKamerTarief = await _context.HotelKamerTarieven.FindAsync(id);
+            if (hotelKamerTarief != null)
             {
-                _context.HotelKamers.Remove(hotelkamer);
+                _context.HotelKamerTarieven.Remove(hotelKamerTarief);
             }
 
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool HotelkamerExists(int id)
+        private bool HotelKamerTariefExists(int id)
         {
-            return _context.HotelKamers.Any(e => e.Id == id);
+            return _context.HotelKamerTarieven.Any(e => e.Id == id);
         }
     }
 }
