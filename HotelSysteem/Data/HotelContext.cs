@@ -17,7 +17,7 @@ namespace HotelSysteem.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Data Source=DESKTOP-K8878SE;Initial Catalog=LeMarconnesHotel;Integrated Security=True;Encrypt=True;TrustServerCertificate=True");
+            optionsBuilder.UseSqlServer("Server=tcp:clmr.database.windows.net,1433;Initial Catalog=AdventureWorks;Persist Security Info=False;User ID=clmr;Password=back2026!;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;");
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
