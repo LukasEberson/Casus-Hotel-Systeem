@@ -13,7 +13,20 @@ namespace HotelSysteem
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
+            // Swagger
+            builder.Services.AddEndpointsApiExplorer();
+            builder.Services.AddSwaggerGen();
+
             var app = builder.Build();
+
+            // Swagger UI (zet dit in elk geval aan in Development)
+            if (app.Environment.IsDevelopment())
+            {
+                app.UseSwagger();
+                app.UseSwaggerUI();
+
+                app.MapGet("/", () => Results.Redirect("/swagger"));
+            }
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
