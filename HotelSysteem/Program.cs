@@ -19,7 +19,7 @@ namespace HotelSysteem
 
             var app = builder.Build();
 
-            // Swagger UI (zet dit in elk geval aan in Development)
+            // Swagger UI 
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
